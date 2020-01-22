@@ -1,0 +1,36 @@
+h1 ポケモン選択
+
+
+
+.mb-3
+table.table.table-hover
+  thead.thead-default
+    tr
+      th 名前
+      th 図鑑番号
+      th タイプ
+      th 特性
+      th 隠れ特性
+      th HP
+      th こうげき
+      th ぼうぎょ
+      th とくこう
+      th とくぼう
+      th すばやさ
+      th 合計
+  tbody
+    - @pokemons.each do |pokemon|
+      tr 
+        td= link_to pokemon.full_name, new_individual_pokemon_path(pokemon: {pokemon_id: pokemon.id})
+        td= pokemon.number
+        td= pokemon.types
+        td= pokemon.abilities
+        td= pokemon.hidden_abilities
+        td= pokemon.hp
+        td= pokemon.attack
+        td= pokemon.defence
+        td= pokemon.sp_attack
+        td= pokemon.sp_defence
+        td= pokemon.speed
+        td= pokemon.base_sum
+

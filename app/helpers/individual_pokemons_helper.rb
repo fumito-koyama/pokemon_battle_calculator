@@ -1,0 +1,2 @@
+module IndividualPokemonsHelper
+end
