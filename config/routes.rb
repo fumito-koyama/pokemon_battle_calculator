@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root to: 'individual_pokemons#index'
-  resources :individual_pokemons, only: [:new, :create]
+  root to: 'pokemon_stats#index'
+  resources :pokemon_stats, only: [:index, :new, :create]
 
 end

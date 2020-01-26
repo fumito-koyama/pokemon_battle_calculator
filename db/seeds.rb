@@ -5,29 +5,41 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-pokedex = 'https://raw.githubusercontent.com/kotofurumiya/pokemon_data/master/data/pokemon_data.json'
+# pokedex = 'https://raw.githubusercontent.com/kotofurumiya/pokemon_data/master/data/pokemon_data.json'
 
-uri = URI.parse(pokedex)
-json = Net::HTTP.get(uri)
-hash = JSON.parse(json)
+# uri = URI.parse(pokedex)
+# json = Net::HTTP.get(uri)
+# hash = JSON.parse(json)
 
-hash.each do |hash|
-  next if (hash['name'].length > 5) and (hash['name'].include? 'メガ') or (hash['name'].include? 'ゲンシ')
-  poke = {
-    number: hash['no'],
-    name: hash['name'],
-    form: hash['form'].blank? ? nil : hash['form'],
-    evolutions: hash['evolutions'].join('/') ,
-    types: hash['types'].join('/'),
-    abilities: hash['abilities'].join('/'),
-    hidden_abilities: hash['hiddenAbilities'][0].blank? ? nil : hash['hiddenAbilities'][0],
-    hp: hash['stats']['hp'],
-    attack: hash['stats']['attack'],
-    defence: hash['stats']['defence'],
-    sp_attack: hash['stats']['spAttack'],
-    sp_defence: hash['stats']['spDefence'],
-    speed: hash['stats']['speed']
-  }
-  Pokemon.create!(poke)
+# hash.each do |hash|
+#   next if (hash['name'].length > 5) and (hash['name'].include? 'メガ') or (hash['name'].include? 'ゲンシ')
+#   poke = {
+#     number: hash['no'],
+#     name: hash['name'],
+#     updated_generation: 7,
+#     form: hash['form'].blank? ? nil : hash['form'],
+#     evolutions: hash['evolutions']&.join('/') ,
+#     types: hash['types'].join('/'),
+#     abilities: hash['abilities'].join('/'),
+#     hidden_abilities: hash['hiddenAbilities'][0].blank? ? nil : hash['hiddenAbilities'][0],
+#     hp: hash['stats']['hp'],
+#     attack: hash['stats']['attack'],
+#     defence: hash['stats']['defence'],
+#     sp_attack: hash['stats']['spAttack'],
+#     sp_defence: hash['stats']['spDefence'],
+#     speed: hash['stats']['speed']
+#   }
+#   Pokemon.create!(poke)
+# end
+
+require './db/seed_base/pokemon_seed.rb'
+require 'byebug'
+
+PokemonSeed.read_json.each do |hash|
+  unique = Pokemon.where(name: hash['name']).where(form: hash['form'])
+  if unique.blank?
+    Pokemon.create!(PokemonSeed.parse_create(hash))
+  else
+    unique.update(PokemonSeed.parse_update(hash))
   end
 end

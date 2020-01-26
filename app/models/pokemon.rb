@@ -21,7 +21,7 @@ class Pokemon < ApplicationRecord
   end
 
   # def evolution_name
-  #   Pokemon.find_by(number: evolutions).name
+  #   Pokemon.where(number: evolutions).name
   # end
 
 

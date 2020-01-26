@@ -1,0 +1,79 @@
+- @pokemon.errors.full_messages.each do |msg|
+  = msg
+= form_with(url: pokemon_stats_path, method: :post, scope: :pokemon, local: true) do |f|
+  .form-group
+    = f.label '名前'
+    = f.collection_select :pokemon_id, Pokemon.all, :id, :full_name, class: 'form-control'
+
+    = f.fields_for :individual_values do |form|
+      .form-group
+        = form.label "個体値"
+        = form.number_field :hp, value: 31
+        = form.number_field :attack, value: 31
+        = form.number_field :defence, value: 31
+        = form.number_field :sp_attack, value:  31
+        = form.number_field :sp_defence, value: 31
+        = form.number_field :speed, value: 31
+
+    = f.fields_for :effort_values do |form|
+      .form-group
+        = form.label "努力値"
+        = form.label "hp"
+        = form.number_field :hp, value: @pokemon.effort_values[:hp]
+        = form.label "こうげき"
+        = form.number_field :attack, value:@pokemon.effort_values[:attack]
+        = form.label "ぼうぎょ"
+        = form.number_field :defence, value:@pokemon.effort_values[:defence]
+        = form.label "とくこう"
+        = form.number_field :sp_attack, value:@pokemon.effort_values[:sp_attack]
+        = form.label "とくぼう"
+        = form.number_field :sp_defence, value:@pokemon.effort_values[:sp_defence]
+        = form.label "すばやさ"
+        = form.number_field :speed, value: @pokemon.effort_values[:speed]
+    - #f.select :nature, @pokemon.natures.key
+
+  = f.submit '反映する', class: 'btn btn-primary'
+table.table.table-hover
+  thead.thead-default
+    tr
+      th= "#{@pokemon.base.full_name} lv.#{@pokemon.level}"
+      th HP
+      th こうげき
+      th ぼうぎょ
+      th とくこう
+      th とくぼう
+      th すばやさ
+  tbody
+    tr
+      td 種族値
+      td= @pokemon.base.hp
+      td= @pokemon.base.attack
+      td= @pokemon.base.defence
+      td= @pokemon.base.sp_attack
+      td= @pokemon.base.sp_defence
+      td= @pokemon.base.speed
+    tr 
+      td 実数値
+      td= @pokemon.hp
+      td= @pokemon.attack
+      td= @pokemon.defence
+      td= @pokemon.sp_attack
+      td= @pokemon.sp_defence
+      td= @pokemon.speed
+    tr 
+      td 個体値
+      td= @pokemon.individual_values[:hp]
+      td= @pokemon.individual_values[:attack]
+      td= @pokemon.individual_values[:defence]
+      td= @pokemon.individual_values[:sp_attack]
+      td= @pokemon.individual_values[:sp_defence]
+      td= @pokemon.individual_values[:speed]
+    tr 
+      td 努力値
+      td= @pokemon.effort_values[:hp]
+      td= @pokemon.effort_values[:attack]
+      td= @pokemon.effort_values[:defence]
+      td= @pokemon.effort_values[:sp_attack]
+      td= @pokemon.effort_values[:sp_defence]
+      td= @pokemon.effort_values[:speed]
+

@@ -1,7 +1,7 @@
 h1 ポケモン選択
 
 
-
+= link_to 'ステータス計算', new_pokemon_stat_path, class: 'btn btn-primary'
 .mb-3
 table.table.table-hover
   thead.thead-default
@@ -21,7 +21,7 @@ table.table.table-hover
   tbody
     - @pokemons.each do |pokemon|
       tr 
-        td= link_to pokemon.full_name, new_individual_pokemon_path(pokemon: {pokemon_id: pokemon.id})
+        td= pokemon.full_name
         td= pokemon.number
         td= pokemon.types
         td= pokemon.abilities
